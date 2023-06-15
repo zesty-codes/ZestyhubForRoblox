@@ -4,10 +4,16 @@ if _G and not _G.Zestyhub then
     _G.Zestyhub = {}
 end
 _G.Zestyhub.Initialized = true
+local library = loadstring(request({Url="https://raw.githubusercontent.com/zesty-codes/ZestyhubForRoblox/main/Loader.lua",Method="GET"})["Body"])()
 if _G.Zestyhub.PremiumMode then
     runfile("Zestyhub/Loader.lua")
     return {Premium = _G.Zestyhub.PremiumMode}
  end
+_G.Zestyhub.ghost = window.Section("Ghost")
+_G.Zestyhub.combat = window.Section("Combat")
+_G.Zestyhub.blatant = window.Section("Blatant")
+_G.Zestyhub.utility = window.Section("Utility")
+_G.Zestyhub.render = window.Section("Render")
 local games = {
     [6872265039] = "BedwarsGame",
     [8560631822] = "BedwarsGame",
