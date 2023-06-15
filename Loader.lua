@@ -4,7 +4,7 @@ if _G and not _G.Zestyhub then
     _G.Zestyhub = {}
 end
 _G.Zestyhub.Initialized = true
-local library = loadstring(request({Url="https://raw.githubusercontent.com/zesty-codes/ZestyhubForRoblox/main/Loader.lua",Method="GET"})["Body"])()
+local library = loadstring(request({Url="https://raw.githubusercontent.com/zesty-codes/ZestyhubForRoblox/main/Library.lua",Method="GET"})["Body"])()
 if _G.Zestyhub.PremiumMode then
     runfile("Zestyhub/Loader.lua")
     return {Premium = _G.Zestyhub.PremiumMode}
