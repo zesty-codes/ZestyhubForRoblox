@@ -112,6 +112,9 @@ local HUI = gethui or function()
 	return huifolder
 end
 
+local player = game:GetService("Players").LocalPlayer
+local cursor = player:GetMouse()
+
 function LabelToButton(txtLabel, runfunc)
 	local data
 	local hovering = false
@@ -174,7 +177,6 @@ local gui_imgui = Instance.new("ScreenGui")
 gui_imgui.Name = game:GetService("HttpService"):GenerateGUID(false)
 
 if syn and syn.protect_gui then
-	warn("syn.protect_gui is supported!")
 	syn.protect_gui(gui_imgui)
 end
 gui_imgui.Parent = HUI()
@@ -200,6 +202,30 @@ Library.new = function(title, size, maincolor, lighttheme, addoptions)
 
 	local img = {Rainbow = false}
 	local ImGuiv1 = Instance.new("Frame")
+	local hoverframe = Instance.new("Frame")
+	hoverframe.ZIndex = 620
+	local TextLabel = Instance.new("TextLabel")
+    local HoverText = TextLabel
+	TextLabel.ZIndex = 630
+	hoverframe.Parent = ImGuiv1
+	hoverframe.Name = "hoverframe"
+	hoverframe.BackgroundColor3 = Color3.fromRGB(19, 121, 255)
+	hoverframe.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	hoverframe.BorderSizePixel = 0
+	hoverframe.Position = UDim2.new(0.351377964, 0, 0.230716258, 0)
+	hoverframe.Size = UDim2.new(0, 200, 0, 20)
+	hoverframe.Visible = false
+	TextLabel.Parent = hoverframe
+	TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	TextLabel.BackgroundTransparency = 1.000
+	TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	TextLabel.BorderSizePixel = 0
+	TextLabel.Position = UDim2.new(0.0299999993, 0, 0, 0)
+	TextLabel.Size = UDim2.new(0, 12001, 0, 20)
+	TextLabel.Font = Enum.Font.Code
+	TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+	TextLabel.TextSize = 14.000
+	TextLabel.TextXAlignment = Enum.TextXAlignment.Left
 	game:GetService("UserInputService").InputBegan:Connect(function(ip)
 		if ip.KeyCode == Enum.KeyCode.Insert then
 			ImGuiv1.Visible = not ImGuiv1.Visible
@@ -354,6 +380,24 @@ Library.new = function(title, size, maincolor, lighttheme, addoptions)
 					f()
 				end)
 			end
+			yep.HoverText = "No hovertext was picked yet."
+			local entered
+			TextLabel.MouseEnter:Connect(function()
+				entered = true
+				coroutine.wrap(function()
+					while entered do
+						hoverframe.Visible = true
+						hoverframe.Position = TextLabel.Position + UDim2.new(0, 30, 0, 60)
+                        hoverframe.Size = UDim2.new(0, 360, 0, 20)
+                        HoverText.Text = yep and yep.HoverText or ""
+						game:GetService("RunService").Heartbeat:Wait()
+					end
+				end)()
+			end)
+			TextLabel.MouseLeave:Connect(function()
+				entered = false
+				hoverframe.Visible = false
+			end)
 			return yep
 		end
 
@@ -456,7 +500,7 @@ Library.new = function(title, size, maincolor, lighttheme, addoptions)
 			Button.TextTransparency = 1.000
 
 			yep.OnToggle = {}
-			
+
 			function yep.OnToggle:Connect(f)
 				LabelToButton(Button, function()
 					state = not state
@@ -469,13 +513,13 @@ Library.new = function(title, size, maincolor, lighttheme, addoptions)
 					f(state)
 				end)
 			end
-			
+
 			function yep.Toggle(bool)
 				assert(type(bool) == "boolean", "Failed to toggle! (Expected #1 argument to be a boolean, got "..typeof(bool)..")")
 				state = bool
 				yep.Toggled = state
 			end
-			
+
 			return yep
 		end
 
@@ -583,22 +627,22 @@ Library.new = function(title, size, maincolor, lighttheme, addoptions)
 
 			return box_api
 		end
-		
+
 		return API
 	end
-	
+
 	if addoptions then
 		local opt = img.Section("Options")
 		local white = opt.Checkbox("White Theme")
 		white.OnToggle:Connect(function(b)
 			lighttheme = b
 			if lighttheme then
-				
+
 			end
 		end)
 		white.Toggle(lighttheme)
 	end
-	
+
 	return img
 end
 
