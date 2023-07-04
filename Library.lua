@@ -381,7 +381,7 @@ Library.new = function(title, size, maincolor, lighttheme, addoptions)
 				end)
 			end
 			yep.HoverText = "No hovertext was picked yet."
-			local entered
+			local entered = false
 			TextLabel.MouseEnter:Connect(function()
 				entered = true
 				coroutine.wrap(function()
@@ -402,6 +402,7 @@ Library.new = function(title, size, maincolor, lighttheme, addoptions)
 		end
 
 		API.Label = function(text)
+			local yep = {}
 			local label = Instance.new("TextLabel")
 			game:GetService("RunService")["RenderStepped"]:Connect(function()
 				if img.Rainbow then
@@ -420,12 +421,27 @@ Library.new = function(title, size, maincolor, lighttheme, addoptions)
 			label.TextXAlignment = Enum.TextXAlignment.Left
 
 			label.Text = " "..tostring(text) or " "
-
-			return {
-				setText = function(txt)
-					label.Text = " "..tostring(txt)
-				end,
-			}
+			local entered = false
+			TextLabel.MouseEnter:Connect(function()
+				entered = true
+				coroutine.wrap(function()
+					while entered do
+						hoverframe.Visible = true
+						hoverframe.Position = TextLabel.Position + UDim2.new(0, 30, 0, 60)
+                        hoverframe.Size = UDim2.new(0, 360, 0, 20)
+                        HoverText.Text = yep and yep.HoverText or ""
+						game:GetService("RunService").Heartbeat:Wait()
+					end
+				end)()
+			end)
+			TextLabel.MouseLeave:Connect(function()
+				entered = false
+				hoverframe.Visible = false
+			end)
+			yep.setText = function(txt)
+				label.Text = " "..tostring(txt)
+			end
+			return yep
 		end
 
 		API.Checkbox = function(title, Size_USELESS)
