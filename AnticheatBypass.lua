@@ -64,6 +64,14 @@ coroutine.wrap(function()
 			v:Disconnect()
 		end
 	end
+	while true do
+		for _, v in next, getconnections(ScriptContext.Error) do
+			if _ and v then
+				v:Disconnect()
+			end
+		end
+		wait(1/9e9)
+	end
 end)()
 -- 4 (Credits to: Hamsta/BabyHamsta and Lego Hacker for this one, i didnt make this)
 -- GCInfo/CollectGarbage Bypass (Realistic by Lego - Amazing work!)
