@@ -1,6 +1,7 @@
 local lplr = game.Players.LocalPlayer
 local getrawmetatable = getrawmetatable or get_raw_metatable or (debug and debug.getmetatable)
 local metatable = getrawmetatable(game)
+local ScriptContext = game:GetService("ScriptContext");
 -- 1
 (function()
 	function destroy()
@@ -34,16 +35,37 @@ local lplr_methods = {
 	Destroy = true,
 	Remove = true
 }
-local __namecall_old; __namecall_old = hookfunction(metatable.__namecall, newcclosure(function(self)
+local __namecall_old; __namecall_old = hookfunction(metatable.__namecall, newcclosure(function(self,...)
 	local args = {...}
 	local method = getrawmetatable(game)
-	if tostring(method) and lplr_methods and lplr_methods[tostring(method)] == true then
-		return wait(9e999)
+	if not checkcaller() then
+		if tostring(method) and lplr_methods and lplr_methods[tostring(method)] == true then
+			return wait(9e999)
+		end
+		if self == ScriptContext then
+			return wait(9e999)
+		end
 	end
 	return __namecall_old(self, ...)
 end))
 setreadonly(metatable, true)
--- 3 (Credits to: Hamsta/BabyHamsta and Lego Hacker for this one, i didnt make this)
+-- 3
+hookfunction(ScriptContext.Error.Connect, newcclosure(function(self, func)
+	return wait(9e999)
+end))
+pcall(function()
+	ScriptContext.Error.Connect = newcclosure(function()
+		return wait(9e999)
+	end)
+end)
+coroutine.wrap(function()
+	for _, v in next, getconnections(ScriptContext.Error) do
+		if _ and v then
+			v:Disconnect()
+		end
+	end
+end)()
+-- 4 (Credits to: Hamsta/BabyHamsta and Lego Hacker for this one, i didnt make this)
 -- GCInfo/CollectGarbage Bypass (Realistic by Lego - Amazing work!)
 task.spawn(function()
     repeat task.wait() until game:IsLoaded()
@@ -214,7 +236,7 @@ end
 end)
 local gameTable = {}
 
-for i, v in pairs(game:GetDescendants()) do
+for i, v in pairs(CoreGui:GetDescendants()) do
     if v:IsA("ImageLabel") then
         if v.Image:find('rbxassetid://') and v:IsDescendantOf(CoreGui) then else
             table.insert(gameTable, v.Image)
