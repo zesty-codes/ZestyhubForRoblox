@@ -122,7 +122,7 @@ function autocombo(character)
     end
 end
 
-autocombo(workspace.Alive["Weakest Dummy"])
+autocombo(workspace.Live["Weakest Dummy"])
 
 --[[ credits to infinite yield for the platform checking
 local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, game:GetService("UserInputService"):GetPlatform())
