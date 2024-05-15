@@ -53,7 +53,7 @@ function useAbility(ability)
     local args = {
         [1] = {
             ["Goal"] = "Auto Use End",
-            ["Tool"] = lplr:FindFirstChild(ability or "Flowing Water") or lplr.Backpack:FindFirstChild(ability or "Flowing Water")
+            ["Tool"] = lplr:FindFirstChild(ability or "Flowing Water", true) or lplr.Backpack:FindFirstChild(ability or "Flowing Water", true)
         }
     }
     
@@ -94,8 +94,8 @@ function calculatePartVelocity(part)
     if part then
         local velocity = part.Velocity
         local X, Z = velocity.X, velocity.Z
-        X = X / 7
-        Z = Z / 7
+        X = X / 6.3
+        Z = Z / 6.3
         return Vector3.new(X, 0, Z)
     end
     return Vector3.zero
@@ -108,7 +108,7 @@ end
 function autocombo(character)
     task.spawn(function()
         repeat
-            lplr.Character:PivotTo(character:GetPivot())
+            lplr.Character:PivotTo(character:GetPivot() + (character:GetPivot().LookVector * -0.8))
             task.wait()
         until character.Humanoid.Health < 1 or lplr.Character.Humanoid.Health < 1
     end)
@@ -117,7 +117,7 @@ function autocombo(character)
     for i = 1, 4 do
         if abilities[i] ~= nil then
             useAbility(abilities[i])
-            task.wait(0.2)
+            task.wait(2)
         end
     end
 end
