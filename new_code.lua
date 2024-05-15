@@ -4,50 +4,9 @@ local breakParry = false
 local holding = false
 local permahold = false
 
-local getCharacter = function() -- there's a better way of doing this, ik :/
-    local back = lplr.Backpack:FindFirstChild("Backpack")
-    if back:FindFirstChild("Normal Punch") then return "The Strongest Hero"
-    elseif back:FindFirstChild("Flowing Water") then
-        return "Hero Hunter"
-    elseif back:FindFirstChild("Machine Gun Blows") then
-        return "Destructive Cyborg"
-    elseif back:FindFirstChild("Flash Strike") then
-        return "Deadly Ninja"
-    elseif back:FindFirstChild("Homerun") then
-        return "Brutal Demon"
-    elseif back:FindFirstChild("Quick Slice") then
-        return "Blade Master"
-    elseif back:FindFirstChild("Crushing Pull") then
-        return "Wild Psychic"
-    end
-end
-
-function getAbilities()
-    local character = getCharacter()
-    if character == "The Strongest Hero" then
-        return {[1] = "Normal Punch", [2] = "Consecutive Punches", [3] = "Shove", [4] = "Uppercut"}
-    elseif character == "Hero Hunter" then
-        return {[1] = "Flowing Water", [2] = "Lethal Whirlwind Stream", [3] = "Hunter's Grasp", --[[ [4] = "Prey's Peril"]]}
-        -- ^ Prey's Peril is a counter-attack, and this is for the auto combo
-    elseif character == "Destructive Cyborg" then
-        return {[1] = "Machine Gun Blows", [2] = "Ignition Burst", [3] = "Blitz Shot", [4] = "Jet Dive"}
-    elseif character == "Deadly Ninja" then
-        return {[1] = "Flash Strike", [2] = "Whirlwind Kick", [3] = "Scatter", [4] = "Explosive Shuriken"}
-    elseif character == "Brutal Demon" then
-        return {[1] = "Homerun", [2] = "Beatdown", [3] = "Grand Slam", [4] = "Foul Ball"}
-    elseif character == "Blade Master" then
-        return {[1] = "Quick Slice", [2] = "Atmos Cleave", [3] = "Pinpoint Cut", [4] = "Split Second Counter"}
-    end
-end
-
-function Communicate(args)
-	if lplr and lplr.Character then
-		local communicate = lplr.Character:FindFirstChild("Communicate")
-		if communicate then
-			communicate:FireServer(args)
-		end
-	end
-end
+local getCharacter=function()local b=lplr.Backpack:FindFirstChild("Backpack")if b:FindFirstChild("Normal Punch")then return"The Strongest Hero"elseif b:FindFirstChild("Flowing Water")then return"Hero Hunter"elseif b:FindFirstChild("Machine Gun Blows")then return"Destructive Cyborg"elseif b:FindFirstChild("Flash Strike")then return"Deadly Ninja"elseif b:FindFirstChild("Homerun")then return"Brutal Demon"elseif b:FindFirstChild("Quick Slice")then return"Blade Master"elseif b:FindFirstChild("Crushing Pull")then return"Wild Psychic"end end
+function getAbilities()local a=getCharacter()if a=="The Strongest Hero"then return{[1]="Normal Punch",[2]="Consecutive Punches",[3]="Shove",[4]="Uppercut"}elseif a=="Hero Hunter"then return{[1]="Flowing Water",[2]="Lethal Whirlwind Stream",[3]="Hunter's Grasp"}elseif a=="Destructive Cyborg"then return{[1]="Machine Gun Blows",[2]="Ignition Burst",[3]="Blitz Shot",[4]="Jet Dive"}elseif a=="Deadly Ninja"then return{[1]="Flash Strike",[2]="Whirlwind Kick",[3]="Scatter",[4]="Explosive Shuriken"}elseif a=="Brutal Demon"then return{[1]="Homerun",[2]="Beatdown",[3]="Grand Slam",[4]="Foul Ball"}elseif a=="Blade Master"then return{[1]="Quick Slice",[2]="Atmos Cleave",[3]="Pinpoint Cut",[4]="Split Second Counter"}end end
+function Communicate(a)if lplr and lplr.Character then local b=lplr.Character:FindFirstChild("Communicate")if b then b:FireServer(a)end end end
 
 function useAbility(ability)
     local args = {
@@ -74,21 +33,7 @@ function Punch()
 end
 
 local plrs = game:GetService("Players")
-function getPlayersNear(pos, max)
-	local players = {}
-	for i, v in next, plrs:GetPlayers() do
-		if v ~= lplr and v.Character ~= nil then
-			local humanoid = v.Character:FindFirstChildOfClass("Humanoid")
-			if humanoid and humanoid.Health > 1 then
-				print((v.Character.Head.Position - pos).Magnitude)
-				if (v.Character.Head.Position - pos).Magnitude < max then
-					table.insert(players, v)
-				end
-			end
-		end
-	end
-	return players
-end
+function getPlayersNear(a,b)local c={}for d,e in next,plrs:GetPlayers()do if e~=lplr and e.Character~=nil then local f=e.Character:FindFirstChildOfClass("Humanoid")if f and f.Health>1 then print((e.Character.Head.Position-a).Magnitude)if(e.Character.Head.Position-a).Magnitude<b then table.insert(c,e)end end end end;return c end
 
 function calculatePartVelocity(part)
     if part then
